@@ -26,7 +26,7 @@ func main() {
 
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			http.Error(w, "Ocorreu um ao fazder a requisição", http.StatusInternalServerError)
+			http.Error(w, "Ocorreu um ao fazer a requisição", http.StatusInternalServerError)
 			return
 		}
 		defer resp.Body.Close()
@@ -42,7 +42,7 @@ func main() {
 		}
 
 		if err := json.Unmarshal(body, &apiResp); err != nil {
-			http.Error(w, "Failed to unmarshal response", http.StatusInternalServerError)
+			http.Error(w, "Ocorreu um ao fazer o parse", http.StatusInternalServerError)
 			return
 		}
 
@@ -53,22 +53,22 @@ func main() {
 		dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 		defer dbCancel()
 
-		db, err := sql.Open("sqlite3", "./quotes.db")
+		db, err := sql.Open("sqlite3", "./quotes.sqlite")
 		if err != nil {
-			http.Error(w, "Failed to open database", http.StatusInternalServerError)
+			http.Error(w, "Ocorreu um erro ao tentar abrir conexao", http.StatusInternalServerError)
 			return
 		}
 		defer db.Close()
 
 		_, err = db.ExecContext(dbCtx, "CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, bid TEXT)")
 		if err != nil {
-			http.Error(w, "Failed to create table", http.StatusInternalServerError)
+			http.Error(w, "Ocorreu um erro ao tentar criar a tabela", http.StatusInternalServerError)
 			return
 		}
 
 		_, err = db.ExecContext(dbCtx, "INSERT INTO quotes (bid) VALUES (?)", bid)
 		if err != nil {
-			http.Error(w, "Failed to insert quote", http.StatusInternalServerError)
+			http.Error(w, "Ocorreu um erro ao tentar inserir a cotação", http.StatusInternalServerError)
 			return
 		}
 
