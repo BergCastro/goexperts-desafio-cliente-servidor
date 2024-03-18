@@ -50,7 +50,7 @@ func main() {
 		bid := apiResp["USDBRL"].Bid
 
 		
-		dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+		dbCtx, dbCancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer dbCancel()
 
 		db, err := sql.Open("sqlite3", "./quotes.sqlite")
