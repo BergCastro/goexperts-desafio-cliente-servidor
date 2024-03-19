@@ -26,7 +26,7 @@ func main() {
 
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			http.Error(w, "Ocorreu um ao fazer a requisição", http.StatusInternalServerError)
+			http.Error(w, "Ocorreu um ao fazer a requisição, tente novamente", http.StatusInternalServerError)
 			return
 		}
 		defer resp.Body.Close()
@@ -55,6 +55,7 @@ func main() {
 
 		db, err := sql.Open("sqlite3", "./quotes.sqlite")
 		if err != nil {
+			
 			http.Error(w, "Ocorreu um erro ao tentar abrir conexao", http.StatusInternalServerError)
 			return
 		}
